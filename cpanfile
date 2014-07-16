@@ -1,4 +1,5 @@
 requires 'Amon2', '6.02';
+requires 'Data::Section::Simple', '0.07';
 requires 'Module::Functions', '2';
 requires 'Starlet', '0.20';
 requires 'Text::Xslate', '2.0009';
