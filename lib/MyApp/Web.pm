@@ -4,27 +4,21 @@ use warnings;
 use utf8;
 use parent qw(MyApp Amon2::Web);
 use File::Spec;
+use Data::Section::Simple qw( get_data_section );
 
 sub dispatch {
     my ($c) = @_;
 
-    $c->render('index.tx');
-}
+    my $foo = get_data_section( 'foo' );
+    my $res = $c->create_response( defined $foo ? 200 : 500 );
+    $res->content_type( 'text/plain' );
+    $res->content( defined $foo ? 'OK' : 'NG' );
 
-# setup view
-use MyApp::Web::View;
-{
-    my $view = MyApp::Web::View->make_instance(__PACKAGE__);
-    sub create_view { $view }
+    return $res;
 }
-
-__PACKAGE__->add_trigger(
-    AFTER_DISPATCH => sub {
-        my ( $c, $res ) = @_;
-        # for your security
-        $res->header( 'X-Content-Type-Options' => 'nosniff' );
-        $res->header( 'X-Frame-Options' => 'DENY' );
-    },
-);
 
 1;
+__DATA__
+
+@@ foo
+foobar
